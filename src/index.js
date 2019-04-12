@@ -23,12 +23,8 @@ const visitor = {
     }
 
     if(arrName && arrIndex && operator) {
-      console.log('@arrName:', arrName)
-      console.log('@arrIndex:', arrIndex)
-      console.log('@operator:', operator)
-      const result = `${arrName}.length ${operator} ${arrIndex}`
-      // TODO: 找到合适的 替换类型
-      path.replaceWith(t.stringLiteral(result))
+      const result = `[${arrName}.length ${operator} ${arrIndex}]`
+      path.replaceWithSourceString(result)
     }
 
   }
