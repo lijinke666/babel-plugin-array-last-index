@@ -29,4 +29,29 @@ describe('test array last value babel plugin', () => {
 
     expect(code.trimAll()).toEqual(`const arr = [1,2,3];arr[arr.length - 1] = 2;`.trimAll())
   })
+
+  it('should support lodash get & value is string', () => {
+    const _code = `
+      const arr = [1,2,3];
+      get(arr,'[-1]');
+    `
+    const { code } = transform(_code, {
+      plugins: [babelArrayLastValuePlugin]
+    })
+
+    expect(code.trimAll()).toEqual(`const arr = [1,2,3];get(arr,\`[\${arr.length-1}]\`);`.trimAll())
+  })
+
+
+  it('should support lodash get & value is number', () => {
+    const _code = `
+      const arr = [1,2,3];
+      get(arr,[-1]);
+    `
+    const { code } = transform(_code, {
+      plugins: [babelArrayLastValuePlugin]
+    })
+
+    expect(code.trimAll()).toEqual(`const arr = [1,2,3];get(arr,[arr.length-1]);`.trimAll())
+  })
 })

@@ -35,6 +35,8 @@ const visitor = {
       path.replaceWithSourceString(result)
     }
   },
+
+  // TODO: 优化 只替换表达式之前的
   AssignmentExpression(path){
     // 表达式 arr[-1] = 2
     const node = path.node
@@ -59,6 +61,28 @@ const visitor = {
     if(node.right && t.isNumericLiteral(node.right) && arrName && operator && arrIndex) {
       const value = node.right.value
       const result = `${arrName}[${arrName}.length ${operator} ${arrIndex}] = ${value}`
+      path.replaceWithSourceString(result)
+    }
+  },
+
+  CallExpression(path){
+    // 支持 lodash get(arr,'[0]')
+    const node = path.node
+    let result
+    if(
+      node.callee && 
+      t.isIdentifier(node.callee) &&
+      node.callee.name === 'get'
+    ) {
+      const [arrNameNode, arrIndexNode] = node.arguments
+      if(t.isIdentifier(arrNameNode) && t.isStringLiteral(arrIndexNode)) {
+        const arrName = arrNameNode.name
+        const arrIndex = arrIndexNode.value.replace('[','').replace(']','')
+        result = `get(${arrName}, \`[\$\{${arrName}.length ${arrIndex}\}]\`)`
+      }
+    }
+
+    if(result) {
       path.replaceWithSourceString(result)
     }
   }
