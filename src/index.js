@@ -38,8 +38,29 @@ const visitor = {
   AssignmentExpression(path){
     // 表达式 arr[-1] = 2
     const node = path.node
-    console.log('node: ', node.left);
-    // path.replaceWithSourceString('string')
+    let arrName;
+    let arrIndex;
+    let operator;
+    if(
+      node.left &&
+      node.left.property &&
+      t.isUnaryExpression(node.left.property) &&
+      node.left.property.prefix
+    ) {
+      operator = node.left.property.operator
+      if(node.left.property.argument && t.isNumericLiteral(node.left.property.argument)) {
+        arrIndex = node.left.property.argument.value
+      }
+    }
+    if (node.left.object && t.isIdentifier(node.left.object)) {
+      arrName = node.left.object.name
+    }
+    
+    if(node.right && t.isNumericLiteral(node.right) && arrName && operator && arrIndex) {
+      const value = node.right.value
+      const result = `${arrName}[${arrName}.length ${operator} ${arrIndex}] = ${value}`
+      path.replaceWithSourceString(result)
+    }
   }
 }
 
