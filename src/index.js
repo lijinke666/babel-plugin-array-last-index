@@ -22,11 +22,24 @@ const visitor = {
       }
     }
 
-    if(arrName && arrIndex && operator) {
+    // 排除直接是表达式 arr[-1] = 2 的这种情况
+    if(
+      arrName && 
+      arrIndex && 
+      operator && 
+      path.parentPath && 
+      path.parentPath.node && 
+      !t.isAssignmentExpression(path.parentPath.node)
+    ) {
       const result = `[${arrName}.length ${operator} ${arrIndex}]`
       path.replaceWithSourceString(result)
     }
-
+  },
+  AssignmentExpression(path){
+    // 表达式 arr[-1] = 2
+    const node = path.node
+    console.log('node: ', node.left);
+    // path.replaceWithSourceString('string')
   }
 }
 
