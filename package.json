@@ -1,0 +1,48 @@
+{
+  "name": "babel-plugin-array-last-value",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lijinke666/babel-plugin-array-last-value.git"
+  },
+  "main": "lib/index.js",
+  "author": "babel-plugin-array-last-value",
+  "license": "MIT",
+  "keywords": [
+    "module",
+    "npm",
+    "babel-plugin-array-last-value"
+  ],
+  "pre-commit": "lint",
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier --write",
+      "eslint_d --fix",
+      "git add"
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "modulePathIgnorePatterns": [
+      "/.history/",
+      "/node_modules/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__tests__/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__tests__/__mocks__/styleMock.js"
+    }
+  }
+}
