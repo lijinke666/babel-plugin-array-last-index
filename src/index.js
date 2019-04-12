@@ -1,5 +1,41 @@
-export default () => {
-  /*eslint-disable no-console */
-  console.log("hello world");
-  return true;
-};
+const babel = require('@babel/core')
+const t = require('@babel/types')
+
+const visitor = {
+  MemberExpression(path) {
+    const node = path.node
+    let arrName;
+    let arrIndex;
+    let operator;
+    if (node.object && t.isIdentifier(node.object)) {
+      arrName = node.object.name
+    }
+    if(node.property && t.isUnaryExpression(node.property)){
+      if(
+        node.property.prefix && 
+        node.property.operator && 
+        node.property.argument && 
+        t.isNumericLiteral(node.property.argument)
+      ) {
+        arrIndex = node.property.argument.value
+        operator = node.property.operator
+      }
+    }
+
+    if(arrName && arrIndex && operator) {
+      console.log('@arrName:', arrName)
+      console.log('@arrIndex:', arrIndex)
+      console.log('@operator:', operator)
+      const result = `${arrName}.length ${operator} ${arrIndex}`
+      // TODO: 找到合适的 替换类型
+      path.replaceWith(t.stringLiteral(result))
+    }
+
+  }
+}
+
+module.exports = (babel) => {
+  return {
+    visitor
+  }
+}
