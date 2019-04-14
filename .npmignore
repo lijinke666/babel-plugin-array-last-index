@@ -2,3 +2,5 @@
 src
 assetsImg
 coverage
+yarn-error.log
+lib

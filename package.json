@@ -8,8 +8,11 @@
   "scripts": {
     "test": "jest"
   },
-  "main": "lib/index.js",
-  "author": "babel-plugin-array-last-index",
+  "files": [
+    "src"
+  ],
+  "main": "src/index.js",
+  "author": "Jinke.Li",
   "license": "MIT",
   "keywords": [
     "module",
