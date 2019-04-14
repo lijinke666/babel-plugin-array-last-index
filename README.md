@@ -1,6 +1,6 @@
 # babel-plugin-array-last-index
 
-![https://github.com/lijinke666/babel-plugin-array-last-index/blob/master/carbon.png](https://github.com/lijinke666/babel-plugin-array-last-index/blob/master/carbon.png)
+![https://cdn.lijinke.cn/carbon.png](https://cdn.lijinke.cn/carbon.png)
 
 [![npm](https://img.shields.io/npm/dm/babel-plugin-array-last-index.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-array-last-index)
 [![npm](https://img.shields.io/npm/l/babel-plugin-array-last-index.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-array-last-index)
