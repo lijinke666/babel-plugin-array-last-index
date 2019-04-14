@@ -1,20 +1,20 @@
 {
-  "name": "babel-plugin-array-last-value",
+  "name": "babel-plugin-array-last-index",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lijinke666/babel-plugin-array-last-value.git"
+    "url": "https://github.com/lijinke666/babel-plugin-array-last-index.git"
   },
   "scripts": {
     "test": "jest"
   },
   "main": "lib/index.js",
-  "author": "babel-plugin-array-last-value",
+  "author": "babel-plugin-array-last-index",
   "license": "MIT",
   "keywords": [
     "module",
     "npm",
-    "babel-plugin-array-last-value"
+    "babel-plugin-array-last-index"
   ],
   "pre-commit": "lint",
   "lint-staged": {

@@ -67,6 +67,7 @@ const visitor = {
 
   CallExpression(path){
     // 支持 lodash get(arr,'[0]')
+    // 支持 lodash get(arr,[0])
     const node = path.node
     let result
     if(
@@ -75,10 +76,24 @@ const visitor = {
       node.callee.name === 'get'
     ) {
       const [arrNameNode, arrIndexNode] = node.arguments
-      if(t.isIdentifier(arrNameNode) && t.isStringLiteral(arrIndexNode)) {
+      if(t.isIdentifier(arrNameNode)) {
         const arrName = arrNameNode.name
-        const arrIndex = arrIndexNode.value.replace('[','').replace(']','')
-        result = `get(${arrName}, \`[\$\{${arrName}.length ${arrIndex}\}]\`)`
+        if(t.isStringLiteral(arrIndexNode)) {
+          const arrIndex = arrIndexNode.value.replace('[','').replace(']','')
+          result = `get(${arrName}, \`[\$\{${arrName}.length ${arrIndex}\}]\`)`
+        }else if(t.isArrayExpression(arrIndexNode)) {
+          if(
+            arrIndexNode.elements && 
+            arrIndexNode.elements.length === 1
+            ) {
+              const element = arrIndexNode.elements[0]
+              if(t.isUnaryExpression(element) && t.isNumericLiteral(element.argument)){
+                const operator = element.operator
+                const value = element.argument.value
+                result = `get(${arrName}, [\`\$\{ ${arrName}.length ${operator} ${value} \}\`])`
+              }
+          }
+        }
       }
     }
 

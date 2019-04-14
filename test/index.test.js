@@ -7,7 +7,7 @@ describe('test array last value babel plugin', () => {
       return this.replace(/\s/g, "")
     }
   })
-  it('test-1', () => {
+  it('test expression', () => {
     const _code = `
       const arr = [1,2,3];
       const v = arr[-1];
@@ -18,7 +18,7 @@ describe('test array last value babel plugin', () => {
 
     expect(code.trimAll()).toEqual(`const arr = [1,2,3];const v = [arr.length - 1];`.trimAll())
   })
-  it('test-2', () => {
+  it('test assignment', () => {
     const _code = `
       const arr = [1,2,3];
       arr[-1] = 2
@@ -52,6 +52,6 @@ describe('test array last value babel plugin', () => {
       plugins: [babelArrayLastValuePlugin]
     })
 
-    expect(code.trimAll()).toEqual(`const arr = [1,2,3];get(arr,[arr.length-1]);`.trimAll())
+    expect(code.trimAll()).toEqual(`const arr = [1,2,3];get(arr,[\`\${arr.length-1}\`]);`.trimAll())
   })
 })
