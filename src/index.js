@@ -31,7 +31,7 @@ const visitor = {
       path.parentPath.node && 
       !t.isAssignmentExpression(path.parentPath.node)
     ) {
-      const result = `[${arrName}.length ${operator} ${arrIndex}]`
+      const result = `${arrName}[${arrName}.length ${operator} ${arrIndex}]`
       path.replaceWithSourceString(result)
     }
   },
