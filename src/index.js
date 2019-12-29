@@ -12,9 +12,9 @@ const visitor = {
     }
     if(node.property && t.isUnaryExpression(node.property)){
       if(
-        node.property.prefix && 
-        node.property.operator && 
-        node.property.argument && 
+        node.property.prefix &&
+        node.property.operator &&
+        node.property.argument &&
         t.isNumericLiteral(node.property.argument)
       ) {
         arrIndex = node.property.argument.value
@@ -24,11 +24,11 @@ const visitor = {
 
     // 排除直接是表达式 arr[-1] = 2 的这种情况
     if(
-      arrName && 
-      arrIndex && 
-      operator && 
-      path.parentPath && 
-      path.parentPath.node && 
+      arrName &&
+      arrIndex &&
+      operator &&
+      path.parentPath &&
+      path.parentPath.node &&
       !t.isAssignmentExpression(path.parentPath.node)
     ) {
       const result = `${arrName}[${arrName}.length ${operator} ${arrIndex}]`
@@ -39,10 +39,12 @@ const visitor = {
   // TODO: 优化 只替换表达式之前的
   AssignmentExpression(path){
     // 表达式 arr[-1] = 2
+    // n = arr[-1]
     const node = path.node
     let arrName;
     let arrIndex;
     let operator;
+    let assignmentOperator
     if(
       node.left &&
       node.left.property &&
@@ -57,11 +59,26 @@ const visitor = {
     if (node.left.object && t.isIdentifier(node.left.object)) {
       arrName = node.left.object.name
     }
-    
+
     if(node.right && t.isNumericLiteral(node.right) && arrName && operator && arrIndex) {
       const value = node.right.value
       const result = `${arrName}[${arrName}.length ${operator} ${arrIndex}] = ${value}`
       path.replaceWithSourceString(result)
+    }
+
+    if (node.left && node.right && t.isIdentifier(node.left) && t.isMemberExpression(node.right) && node.right.object && node.right.property) {
+
+      // v = arr[-1]
+      if (node.right.object.type === 'Identifier') {
+        arrName = node.right.object.name
+        operator = node.right.property.operator
+        assignmentOperator = node.operator
+        if (t.isUnaryExpression(node.right.property)) {
+          arrIndex = node.right.property.argument.value
+          const result = `${node.left.name} ${assignmentOperator} ${arrName}[${arrName}.length ${operator} ${arrIndex}]`
+          path.replaceWithSourceString(result)
+        }
+      }
     }
   },
 
@@ -71,7 +88,7 @@ const visitor = {
     const node = path.node
     let result
     if(
-      node.callee && 
+      node.callee &&
       t.isIdentifier(node.callee) &&
       node.callee.name === 'get'
     ) {
@@ -83,7 +100,7 @@ const visitor = {
           result = `get(${arrName}, \`[\$\{${arrName}.length ${arrIndex}\}]\`)`
         }else if(t.isArrayExpression(arrIndexNode)) {
           if(
-            arrIndexNode.elements && 
+            arrIndexNode.elements &&
             arrIndexNode.elements.length === 1
             ) {
               const element = arrIndexNode.elements[0]
