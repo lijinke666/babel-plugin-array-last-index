@@ -1,6 +1,8 @@
 # babel-plugin-array-last-index
 
-![https://cdn.lijinke.cn/carbon.png](https://cdn.lijinke.cn/carbon.png)
+> The plugin is outdated, Please use [Array.prototype.at(-1)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at)
+
+![preview](https://github.com/lijinke666/babel-plugin-array-last-index/blob/master/carbon.png)
 
 [![npm](https://img.shields.io/npm/dm/babel-plugin-array-last-index.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-array-last-index)
 [![npm](https://img.shields.io/npm/l/babel-plugin-array-last-index.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-array-last-index)
